@@ -7,6 +7,8 @@ concentração de brasileiros, e cada bairro abre no **Google Street View**.
 Peça de portfólio: visualização de dados geoespaciais, UX de produto e privacidade desde o
 desenho. **As contagens, os grupos e os eventos são fictícios. Os limites dos bairros são reais.**
 
+**No ar:** https://conterraneos.nicolasminetto.workers.dev
+
 ## Como rodar
 
 ```bash

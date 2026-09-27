@@ -1,0 +1,850 @@
+/* ============================================================
+   Landing: seis cenas. Entradas por [data-entra] (lib/rolagem.js)
+   e a cena presa da viagem guiada por --p (0 a 1).
+   ============================================================ */
+
+/* ---------- Entradas ---------- */
+[data-entra] {
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--atraso, 0ms);
+}
+[data-entra="subir"]:not(.entrou) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+[data-entra="nota"]:not(.entrou) {
+  opacity: 0;
+  transform: translateX(36px) rotate(var(--giro, 0deg));
+}
+[data-entra="esquerda"]:not(.entrou) {
+  opacity: 0;
+  transform: translateX(-48px);
+}
+[data-entra="direita"]:not(.entrou) {
+  opacity: 0;
+  transform: translateX(48px);
+}
+
+/* ---------- 1. Capa ---------- */
+.capa {
+  position: relative;
+  min-height: calc(100svh - 4rem - 4.5rem);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--e-5) var(--lateral) var(--e-5) calc(var(--lateral) + 1.5rem);
+  overflow: hidden;
+}
+
+/* A margem vermelha do caderno escolar. */
+.capa__margem {
+  position: absolute;
+  inset: 0 auto 0 calc(var(--lateral) + 0.25rem);
+  width: 1.5px;
+  background: rgba(242, 106, 27, 0.45);
+}
+
+.capa__texto {
+  position: relative;
+  max-width: 50rem;
+}
+
+.capa__rotulo {
+  margin-bottom: var(--e-2);
+}
+
+.capa__titulo {
+  font-size: var(--t-6);
+  line-height: 0.98;
+}
+
+/* O título se escreve: cada linha é revelada da esquerda pra direita, como o traço da caneta. */
+.capa__linha {
+  display: inline-block;
+  clip-path: inset(-0.2em 100% -0.3em 0);
+  animation: escrever 1.1s cubic-bezier(0.6, 0.1, 0.3, 1) forwards;
+}
+.capa__linha + .capa__linha {
+  animation-delay: 0.7s;
+}
+
+@keyframes escrever {
+  to {
+    clip-path: inset(-0.2em -0.1em -0.3em 0);
+  }
+}
+
+/* "zero" levado no marca-texto. */
+.capa__marca {
+  color: inherit;
+  font-style: italic;
+  background: linear-gradient(transparent 58%, var(--acento) 58%, var(--acento) 92%, transparent 92%)
+    no-repeat 0 0 / 0% 100%;
+  padding: 0 0.08em;
+  animation: marcar 0.6s 1.5s ease-out forwards;
+}
+
+@keyframes marcar {
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+.capa__sub {
+  max-width: 38rem;
+  margin-top: var(--e-3);
+  font-size: var(--t-2);
+  color: var(--tinta-suave);
+  opacity: 0;
+  animation: aparecer 0.7s 1.1s ease forwards;
+}
+
+.capa__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-2) var(--e-3);
+  margin-top: var(--e-4);
+  opacity: 0;
+  animation: aparecer 0.7s 1.3s ease forwards;
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Carimbos caem no canto de cima, um depois do outro. */
+.capa__carimbos {
+  position: absolute;
+  top: var(--e-4);
+  right: var(--lateral);
+  width: min(26rem, 46vw);
+  height: 17rem;
+}
+
+.carimbo {
+  mix-blend-mode: multiply;
+}
+
+.capa__carimbo {
+  position: absolute;
+  opacity: 0;
+  animation: carimbar 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) forwards;
+}
+.capa__carimbo--1 {
+  top: 0;
+  right: 45%;
+  --giro: -12deg;
+  animation-delay: 0.3s;
+}
+.capa__carimbo--2 {
+  top: 4.5rem;
+  right: 8%;
+  --giro: 9deg;
+  animation-delay: 0.65s;
+}
+.capa__carimbo--3 {
+  top: 9rem;
+  right: 50%;
+  --giro: -3deg;
+  animation-delay: 1s;
+}
+
+@keyframes carimbar {
+  from {
+    opacity: 0;
+    transform: scale(1.6) rotate(var(--giro));
+  }
+  to {
+    opacity: 0.88;
+    transform: scale(1) rotate(var(--giro));
+  }
+}
+
+@media (max-width: 700px) {
+  .capa {
+    align-items: flex-end;
+    padding-top: 11rem;
+  }
+  .capa__carimbos {
+    top: var(--e-3);
+    width: 17rem;
+    height: 10rem;
+  }
+  .capa__carimbo {
+    width: 88px;
+    height: 88px;
+  }
+  .capa__carimbo--2 {
+    top: 2.5rem;
+  }
+  .capa__carimbo--3 {
+    top: 4.8rem;
+    right: 58%;
+  }
+}
+
+/* ---------- 2. Antes de ir ---------- */
+.antes {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--e-6) var(--lateral);
+  display: grid;
+  gap: var(--e-5);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 860px) {
+  .antes {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.antes__texto h2 {
+  font-size: var(--t-5);
+  margin: var(--e-2) 0 var(--e-3);
+  max-width: 16ch;
+}
+
+.antes__texto p:last-child {
+  max-width: 44ch;
+  color: var(--tinta-suave);
+}
+
+.antes__notas {
+  list-style: none;
+  margin: 0;
+  padding: var(--e-2) 0 0 var(--e-3);
+  border-left: 1.5px solid rgba(242, 106, 27, 0.45);
+  display: grid;
+  gap: var(--e-3);
+}
+
+.antes__notas li {
+  font-size: clamp(1.6rem, 3vw, 2rem);
+}
+.antes__notas li:nth-child(odd) {
+  --giro: -1.5deg;
+}
+.antes__notas li:nth-child(even) {
+  --giro: 1.2deg;
+  padding-left: var(--e-4);
+}
+.antes__notas li.entrou {
+  transform: rotate(var(--giro));
+}
+
+/* ---------- 3. A viagem (pico) ---------- */
+.viagem {
+  --p: 0;
+  /* 0 = papel, 1 = mar noturno. A virada acontece no primeiro trecho da cena. */
+  --noite: clamp(0, calc(var(--p) * 12), 1);
+  position: relative;
+  height: 520vh;
+}
+
+.viagem__palco {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--mar) calc(var(--noite) * 100%), var(--papel));
+  color: color-mix(in srgb, var(--papel) calc(var(--noite) * 100%), var(--tinta));
+}
+
+.viagem__mundo {
+  position: absolute;
+  inset: 4rem 0 0;
+  width: 100%;
+  height: calc(100% - 4rem);
+}
+
+.viagem__terra {
+  fill: color-mix(in srgb, #1a2a44 calc(var(--noite) * 100%), var(--superficie));
+  stroke: color-mix(in srgb, rgba(244, 243, 238, 0.28) calc(var(--noite) * 100%), var(--linha));
+  stroke-width: 0.8;
+}
+
+.viagem__rota {
+  --r: clamp(0, calc((var(--p) - var(--ini)) / var(--dur)), 1);
+}
+
+.viagem__revela {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 10;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: calc(1 - var(--r));
+}
+
+.viagem__pontilhado {
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 8;
+}
+
+.viagem__origem circle {
+  fill: var(--acento);
+}
+.viagem__origem .viagem__pulso {
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 1.5;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: pulso 2.2s ease-out infinite;
+}
+
+@keyframes pulso {
+  from {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.viagem text {
+  fill: currentColor;
+  font: 600 13px var(--f-texto);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.viagem__destino {
+  --chegou: clamp(0, calc((var(--p) - var(--chegada)) * 25), 1);
+}
+.viagem__destino > circle {
+  fill: var(--papel);
+  opacity: var(--chegou);
+}
+.viagem__carimbo {
+  opacity: var(--chegou);
+  mix-blend-mode: normal;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(calc(1.5 - var(--chegou) * 0.5));
+}
+
+/* Legendas da partida e das rotas: uma de cada vez, conforme a etapa. */
+.viagem__legenda {
+  position: absolute;
+  left: var(--lateral);
+  bottom: var(--e-4);
+  width: min(26rem, calc(100% - 2 * var(--lateral)));
+  padding: var(--e-3);
+  border-radius: var(--raio);
+  background: color-mix(in srgb, var(--mar) 94%, transparent);
+  color: var(--papel);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+.viagem__legenda h2,
+.viagem__legenda h3 {
+  font-size: var(--t-4);
+  margin: var(--e-1) 0 var(--e-2);
+}
+.viagem__legenda p:not(.rotulo) {
+  font-size: var(--t-1);
+  color: #d7dae1;
+}
+.viagem__legenda .rotulo {
+  color: #f7ba88;
+}
+.viagem__legenda .aviso-ficticio {
+  margin-top: var(--e-2);
+  color: #aab1be;
+  font-size: 0.8125rem;
+}
+
+/* A primeira legenda nasce sobre o papel: tinta escura até a noite cair. */
+.viagem__legenda[data-e="0"] {
+  background: transparent;
+  color: inherit;
+  padding-left: 0;
+}
+.viagem__legenda[data-e="0"] p:not(.rotulo) {
+  color: inherit;
+  opacity: 0.85;
+}
+.viagem__legenda[data-e="0"] .rotulo {
+  color: inherit;
+}
+
+.viagem[data-etapa="0"] .viagem__legenda[data-e="0"],
+.viagem[data-etapa="1"] .viagem__legenda[data-e="1"],
+.viagem[data-etapa="2"] [data-cidade="toronto"] .viagem__legenda,
+.viagem[data-etapa="3"] [data-cidade="dublin"] .viagem__legenda,
+.viagem[data-etapa="4"] [data-cidade="oslo"] .viagem__legenda {
+  opacity: 1;
+  transform: none;
+}
+
+/* Lentes: cada cidade se abre num círculo que nasce do ponto dela no mapa-múndi. */
+.viagem__lente {
+  --l: clamp(0, calc((var(--p) - var(--ini)) / 0.06), 1);
+  --traco: clamp(0, calc((var(--p) - var(--ini) - 0.02) / 0.06), 1);
+  --cor: clamp(0, calc((var(--p) - var(--ini) - 0.06) / 0.05), 1);
+  position: absolute;
+  inset: 0;
+  background: var(--mar);
+  clip-path: circle(calc(var(--l) * 150vmax) at var(--x, 50%) var(--y, 50%));
+  visibility: hidden;
+}
+.viagem[data-etapa="2"] [data-cidade="toronto"],
+.viagem[data-etapa="3"] [data-cidade="toronto"],
+.viagem[data-etapa="3"] [data-cidade="dublin"],
+.viagem[data-etapa="4"] .viagem__lente {
+  visibility: visible;
+}
+
+.viagem__cidade {
+  position: absolute;
+  top: 4.5rem;
+  right: var(--lateral);
+  bottom: var(--e-3);
+  width: min(100% - 2 * var(--lateral), 62rem);
+  height: calc(100% - 4.5rem - var(--e-3));
+}
+
+.viagem__cidade path {
+  fill-opacity: var(--cor);
+  stroke: rgba(244, 243, 238, 0.7);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: calc(1 - var(--traco));
+}
+.viagem__cidade path.sem-dados {
+  fill-opacity: 0;
+  stroke: rgba(244, 243, 238, 0.35);
+}
+
+.viagem__anotacao {
+  opacity: var(--cor);
+}
+.viagem__anotacao circle {
+  fill: var(--papel);
+  stroke: var(--mar);
+  stroke-width: 2;
+}
+.viagem__anotacao path {
+  fill: none;
+  stroke: var(--papel);
+  stroke-width: 1.2;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  opacity: 0.8;
+}
+.viagem__anotacao text {
+  fill: var(--papel);
+  font: 700 26px var(--f-mao);
+  letter-spacing: 0;
+  text-transform: none;
+  paint-order: stroke;
+  stroke: var(--mar);
+  stroke-width: 5px;
+}
+
+@media (max-width: 760px) {
+  .viagem__mundo {
+    inset: 4rem 0 auto;
+    height: 55%;
+  }
+  .viagem__cidade {
+    top: 4.5rem;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 56%;
+  }
+  .viagem__legenda {
+    bottom: var(--e-3);
+  }
+}
+
+/* Sem movimento: nada preso, tudo no estado final, cidades uma embaixo da outra. */
+@media (prefers-reduced-motion: reduce) {
+  .viagem {
+    --p: 1;
+    height: auto;
+    background: var(--mar);
+  }
+  .viagem__palco {
+    position: relative;
+    height: auto;
+    display: grid;
+    gap: var(--e-4);
+    padding: var(--e-5) var(--lateral);
+  }
+  .viagem__mundo {
+    position: static;
+    height: auto;
+    aspect-ratio: 1000 / 620;
+  }
+  .viagem__legenda,
+  .viagem__legenda[data-e="0"] {
+    position: static;
+    opacity: 1;
+    transform: none;
+    width: auto;
+    max-width: 40rem;
+  }
+  .viagem__lente {
+    position: relative;
+    visibility: visible;
+    clip-path: none;
+    --l: 1;
+    --traco: 1;
+    --cor: 1;
+    display: grid;
+    gap: var(--e-2);
+  }
+  .viagem__cidade {
+    position: static;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+  }
+}
+
+/* ---------- 4. Seu caderno ---------- */
+.caderno-demo {
+  padding: var(--e-6) var(--lateral);
+  background: var(--superficie);
+}
+
+.caderno-demo__cabeca {
+  max-width: var(--largura);
+  margin: 0 auto var(--e-4);
+  text-align: right;
+}
+.caderno-demo__cabeca h2 {
+  font-size: var(--t-5);
+  margin-top: var(--e-1);
+}
+
+.caderno-demo__livro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  box-shadow: var(--sombra-papel);
+}
+
+@media (min-width: 900px) {
+  .caderno-demo__livro {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    /* a lombada no meio */
+    background-image: linear-gradient(
+      to right,
+      transparent calc(52.4% - 14px),
+      rgba(27, 36, 51, 0.1) 52.4%,
+      transparent calc(52.4% + 14px)
+    );
+  }
+}
+
+.pagina-livro {
+  padding: var(--e-4) clamp(1rem, 3vw, 2.5rem);
+  min-width: 0;
+}
+
+.pagina-livro--mapa {
+  display: grid;
+  gap: var(--e-2);
+  align-content: start;
+}
+
+.bilhetes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-1);
+}
+
+.bilhete {
+  position: relative;
+  display: grid;
+  text-align: left;
+  min-width: 6.5rem;
+  padding: 0.45rem 1.1rem 0.45rem 0.8rem;
+  border: 1.5px dashed var(--tinta-suave);
+  border-radius: 3px;
+  background: var(--papel);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.bilhete::after {
+  /* furo do bilhete */
+  content: "";
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-top: -0.225rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--tinta-suave);
+}
+.bilhete:hover {
+  transform: rotate(-1.5deg);
+}
+.bilhete[aria-pressed="true"] {
+  border-style: solid;
+  border-color: var(--tinta);
+  background: var(--acento);
+}
+.bilhete[aria-pressed="true"]::after {
+  border-color: var(--tinta);
+  background: var(--papel);
+}
+.bilhete__cidade {
+  font-weight: 600;
+  font-size: var(--t-1);
+}
+.bilhete__pais {
+  font-size: 0.75rem;
+  color: var(--tinta-suave);
+}
+.bilhete[aria-pressed="true"] .bilhete__pais {
+  color: var(--tinta);
+}
+
+.mini-mapa svg {
+  width: 100%;
+  height: auto;
+  max-height: 32rem;
+  touch-action: manipulation;
+}
+
+.mini-mapa__bairro {
+  stroke: var(--papel);
+  stroke-width: 0.8;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.mini-mapa__bairro.sem-dados {
+  stroke: var(--linha);
+  stroke-dasharray: 2 2;
+}
+.mini-mapa__bairro.em-foco {
+  stroke: var(--tinta);
+  stroke-width: 2;
+}
+.mini-mapa__bairro.anotado {
+  stroke: var(--caneta);
+  stroke-width: 2.4;
+  stroke-dasharray: none;
+}
+
+.mini-mapa__dica {
+  min-height: 1.6em;
+  font-size: var(--t-1);
+  color: var(--tinta-suave);
+}
+.mini-mapa__dica strong {
+  color: var(--tinta);
+}
+
+.mini-mapa__lista select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 var(--e-1);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  background: var(--papel);
+  font-size: var(--t-1);
+}
+
+.pagina-livro--notas {
+  border-top: 1px solid var(--linha);
+  background-position: 0 1.2rem;
+}
+@media (min-width: 900px) {
+  .pagina-livro--notas {
+    border-top: 0;
+  }
+}
+
+.pagina-livro__titulo {
+  font-size: 2.25rem;
+  margin-bottom: var(--e-2);
+}
+
+.pagina-livro__vazio {
+  font-size: 1.6rem;
+  color: var(--tinta-suave);
+  max-width: 20ch;
+}
+
+.pagina-livro__rodape {
+  margin-top: var(--e-3);
+  font-size: var(--t-1);
+  color: var(--tinta-suave);
+}
+
+/* ---------- 5. Nunca ---------- */
+.nunca {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--e-6) var(--lateral);
+  display: grid;
+  gap: var(--e-5);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .nunca {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+  }
+}
+
+.nunca__texto h2 {
+  font-size: var(--t-5);
+  margin: var(--e-1) 0 var(--e-3);
+}
+
+.nunca__regras {
+  margin: 0 0 var(--e-3);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--e-2);
+  max-width: 46ch;
+}
+.nunca__regras li {
+  padding-left: 1.8rem;
+  position: relative;
+  color: var(--tinta-suave);
+}
+.nunca__regras li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: -0.1em;
+  font: 700 1.5rem/1 var(--f-mao);
+  color: var(--caneta);
+}
+.nunca__regras strong {
+  color: var(--tinta);
+  font-weight: 600;
+}
+
+.nunca__comparacao {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-3);
+}
+
+.nunca__quadro {
+  margin: 0;
+  display: grid;
+  gap: var(--e-2);
+}
+.nunca__quadro svg {
+  width: 100%;
+  height: auto;
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+}
+.nunca__quadro figcaption {
+  font-size: var(--t-1);
+  color: var(--tinta-suave);
+}
+.nunca__quadro figcaption strong {
+  color: var(--tinta);
+}
+
+.nunca__ruas {
+  stroke: var(--superficie);
+  stroke-width: 7;
+  fill: none;
+}
+.nunca__pino {
+  fill: var(--tinta-suave);
+}
+.nunca__risco {
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.7s 0.6s ease-in-out;
+}
+.nunca__quadro.entrou .nunca__risco {
+  stroke-dashoffset: 0;
+}
+.nunca__bairro {
+  fill: #f38d4a;
+  fill-opacity: 0.75;
+  stroke: var(--acento-escuro);
+  stroke-width: 1.5;
+}
+.nunca__numero {
+  font: 400 34px var(--f-display);
+  fill: var(--tinta);
+}
+
+/* ---------- 6. Chegada ---------- */
+.chegada {
+  position: relative;
+  overflow: hidden;
+  padding: var(--e-6) var(--lateral) calc(var(--e-6) + var(--e-2));
+  background: var(--papel);
+  transition: background-color 1s ease, color 1s ease;
+}
+.chegada.entrou {
+  background: var(--caneta);
+  color: var(--papel);
+}
+
+.chegada__rota {
+  position: absolute;
+  inset: auto 0 12% 0;
+  width: 100%;
+  height: 40%;
+}
+.chegada__rota path {
+  fill: none;
+  stroke: rgba(244, 243, 238, 0.4);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 10;
+  vector-effect: non-scaling-stroke;
+}
+
+.chegada__miolo {
+  position: relative;
+  max-width: 44rem;
+  margin: 0 auto;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--e-2);
+}
+.chegada .rotulo {
+  color: inherit;
+  opacity: 0.8;
+}
+.chegada h2 {
+  font-size: var(--t-6);
+}
+.chegada p:not(.rotulo) {
+  font-size: var(--t-2);
+  opacity: 0.9;
+  margin-bottom: var(--e-2);
+}

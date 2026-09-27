@@ -1,0 +1,222 @@
+/* ---------- Tokens: caderno de viagem ---------- */
+:root {
+  --papel: #f4f3ee;
+  --superficie: #e6e4dc;
+  --tinta: #1b2433;
+  --tinta-suave: #5a6273;
+  --caneta: #2446a8;
+  --mar: #0f1b2d;
+  --acento: #f26a1b;
+  --acento-escuro: #b94a0f;
+  --pauta: rgba(36, 70, 168, 0.09);
+  --linha: rgba(27, 36, 51, 0.14);
+
+  --f-display: "Instrument Serif", Georgia, serif;
+  --f-texto: "IBM Plex Sans", system-ui, sans-serif;
+  --f-mao: "Caveat", "Segoe Print", cursive;
+
+  /* escala tipográfica 15 / 18 / 24 / 36 / 56 / 88 */
+  --t-1: 0.9375rem;
+  --t-2: 1.125rem;
+  --t-3: 1.5rem;
+  --t-4: 2.25rem;
+  --t-5: clamp(2.5rem, 5vw, 3.5rem);
+  --t-6: clamp(3.25rem, 8.5vw, 5.5rem);
+
+  /* espaçamento 8 / 16 / 24 / 40 / 64 / 104 */
+  --e-1: 0.5rem;
+  --e-2: 1rem;
+  --e-3: 1.5rem;
+  --e-4: 2.5rem;
+  --e-5: 4rem;
+  --e-6: 6.5rem;
+
+  --largura: 72rem;
+  --lateral: clamp(1rem, 4vw, 2.5rem);
+  --raio: 4px;
+  --sombra-papel: 0 1px 0 rgba(27, 36, 51, 0.06), 0 8px 24px -12px rgba(27, 36, 51, 0.25);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 400 var(--t-2) / 1.6 var(--f-texto);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--f-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--caneta);
+  text-underline-offset: 0.18em;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--caneta);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.pular {
+  position: absolute;
+  left: var(--e-2);
+  top: -4rem;
+  z-index: 100;
+  background: var(--tinta);
+  color: var(--papel);
+  padding: var(--e-1) var(--e-2);
+}
+.pular:focus {
+  top: var(--e-2);
+}
+
+/* ---------- Peças reutilizáveis ---------- */
+.rotulo {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.mao {
+  font-family: var(--f-mao);
+  color: var(--caneta);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-1);
+  min-height: 3rem;
+  padding: 0 var(--e-3);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  background: var(--acento);
+  color: var(--tinta);
+  font-weight: 600;
+  font-size: var(--t-1);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--tinta);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.botao:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--tinta);
+}
+.botao:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--tinta);
+}
+
+.botao--linha {
+  background: transparent;
+  box-shadow: none;
+}
+.botao--linha:hover {
+  background: var(--superficie);
+  box-shadow: none;
+  transform: none;
+}
+
+.botao--pequeno {
+  min-height: 2.5rem;
+  padding: 0 var(--e-2);
+}
+
+.link-seta {
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid currentColor;
+}
+
+/* Papel pautado: linhas azuis claras, como no caderno. */
+.pautado {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(2rem - 1px),
+    var(--pauta) calc(2rem - 1px),
+    var(--pauta) 2rem
+  );
+}
+
+.aviso-ficticio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.8125rem;
+  color: var(--tinta-suave);
+}
+.aviso-ficticio::before {
+  content: "";
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  border: 1.5px solid var(--acento);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -11,9 +11,14 @@ desenho. **As contagens, os grupos e os eventos são fictícios. Os limites dos 
 
 ```bash
 npm install
-npm run dev        # desenvolvimento
-npm run build      # gera dist/ (estático; Vercel e Netlify já configurados)
+npm run dev        # desenvolvimento (Vite)
+npm run preview    # build + roda no runtime local da Cloudflare (wrangler dev)
+npm run deploy     # build + publica no Cloudflare Workers
 ```
+
+O deploy é um Worker só com Static Assets ([`wrangler.jsonc`](wrangler.jsonc)), em modo SPA:
+rotas como `/mapa/dublin` devolvem o `index.html` e o React Router resolve. Os arquivos com
+hash em `/assets/` recebem cache de um ano ([`public/_headers`](public/_headers)).
 
 ## O que tem
 

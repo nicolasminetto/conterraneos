@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "conterraneos",
+  "compatibility_date": "2026-09-27",
+  // Site estático: sem código de Worker, só os arquivos gerados pelo Vite.
+  "assets": {
+    "directory": "./dist",
+    // Rotas como /mapa/dublin não existem como arquivo: devolve o index.html e o React Router resolve.
+    "not_found_handling": "single-page-application"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
